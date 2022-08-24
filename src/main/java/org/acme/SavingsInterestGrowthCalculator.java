@@ -3,16 +3,13 @@ package org.acme;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/api/savings-calculator")
 public class SavingsInterestGrowthCalculator {
 
-    @GET
+    @POST
     @Operation(summary = "Calculates growth in saving over time given an estimated interest rate")
     @APIResponse(
             responseCode = "200",
@@ -26,6 +23,7 @@ public class SavingsInterestGrowthCalculator {
         long increasedValue = totalValue - request.savings;
 
         return new SavingsCalculationResponse(request.year,request.savings,totalValue,increasedValue);
+//        return new SavingsCalculationResponse(0,0,0,0);
     }
 
 }

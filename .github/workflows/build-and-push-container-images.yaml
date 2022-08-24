@@ -46,9 +46,6 @@ jobs:
           echo "REF=${{ github.sha }}" >> $GITHUB_ENV
           echo "BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
 
-      - name: Debug
-        run: |
-          echo "Quay username is ${{ secrets.QUAY_REPO_USERNAME }}"
 
       - name: Checkout from ${{ env.REF }}
         uses: actions/checkout@v3
