@@ -12,7 +12,9 @@ public class SavingsInterestGrowthCalculatorTest {
     @Test
     public void testDefaultEndpoint() {
         given()
-          .when().get("/api/savings-calculator?savings=10000&years=5&interestRate=2")
+          .contentType("application/json")
+          .body(new SavingsCalculationRequest(5,2,10000))
+          .when().get("/api/savings-calculator")
           .then()
                 .statusCode(200)
                 .body(

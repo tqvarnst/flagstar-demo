@@ -1,12 +1,13 @@
 package org.acme;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 @Path("/api/savings-calculator")
 public class SavingsInterestGrowthCalculator {
@@ -17,29 +18,102 @@ public class SavingsInterestGrowthCalculator {
             responseCode = "200",
             description = "OK, return savings calculation"
     )
-    public SavingCalculationResponse calculate(@QueryParam("savings") @Parameter(description = "Total savings to start with") long savings,
-                            @QueryParam("interestRate") double interestRate,
-                            @QueryParam("years") @Parameter(description = "Number of years") int years) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public SavingsCalculationResponse calculate(SavingsCalculationRequest request)  {
 
-        long totalValue = Math.round(savings*Math.pow(1 + interestRate/100,years));
-        long increasedValue = totalValue - savings;
+        long totalValue = Math.round(request.savings*Math.pow(1 + request.interestRate/100, request.year));
+        long increasedValue = totalValue - request.savings;
 
-        return new SavingCalculationResponse(years,savings,totalValue,increasedValue);
-
+        return new SavingsCalculationResponse(request.year,request.savings,totalValue,increasedValue);
     }
 
 }
 
-class SavingCalculationResponse {
-    public int years;
-    public long savings;
-    public long totalValue;
-    public long increasedValue;
+class SavingsCalculationResponse {
+    int years;
+    long savings;
+    long totalValue;
+    long increasedValue;
 
-    public SavingCalculationResponse(int years, long savings, long totalValue, long increasedValue) {
+    public SavingsCalculationResponse() {
+    }
+
+    public SavingsCalculationResponse(int years, long savings, long totalValue, long increasedValue) {
         this.years = years;
         this.savings = savings;
         this.totalValue = totalValue;
         this.increasedValue = increasedValue;
+    }
+
+    public int getYears() {
+        return years;
+    }
+
+    public void setYears(int years) {
+        this.years = years;
+    }
+
+    public long getSavings() {
+        return savings;
+    }
+
+    public void setSavings(long savings) {
+        this.savings = savings;
+    }
+
+    public long getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(long totalValue) {
+        this.totalValue = totalValue;
+    }
+
+    public long getIncreasedValue() {
+        return increasedValue;
+    }
+
+    public void setIncreasedValue(long increasedValue) {
+        this.increasedValue = increasedValue;
+    }
+}
+
+class SavingsCalculationRequest {
+    int year;
+    double interestRate;
+    long savings;
+
+    public SavingsCalculationRequest() {
+    }
+
+    public SavingsCalculationRequest(int year, double interestRate, long savings) {
+        this.year = year;
+        this.interestRate = interestRate;
+        this.savings = savings;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public long getSavings() {
+        return savings;
+    }
+
+    public void setSavings(long savings) {
+        this.savings = savings;
     }
 }
