@@ -14,7 +14,7 @@ public class SavingsInterestGrowthCalculatorTest {
         given()
           .contentType("application/json")
           .body(new SavingsCalculationRequest(5,2,10000))
-          .when().get("/api/savings-calculator")
+          .when().post("/api/savings-calculator")
           .then()
                 .statusCode(200)
                 .body(
